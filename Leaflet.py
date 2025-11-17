@@ -9,7 +9,7 @@ class MainWindow(Gtk.ApplicationWindow):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.a = Adw.Leaflet(
-            fold_threshold_policy=Adw.FoldThresholdPolicy.NATURAL,  # Korrekte Aufzählung
+            fold_threshold_policy=Adw.FoldThresholdPolicy.NATURAL,
             can_navigate_back=True,
             can_navigate_forward=True,
         )
@@ -29,17 +29,17 @@ class MainWindow(Gtk.ApplicationWindow):
         self.rh = Adw.HeaderBar()
         self.r.append(self.rh)
 
-        # Append Children to Leaflet
+        # Append Children to Leaflet (append ist in Python-Bindungen noch gültig)
         self.set_child(self.a)
-        self.a.add(self.l)  # Korrigiert: append -> add
-        self.a.add(self.r)  # Korrigiert: append -> add
+        self.a.append(self.l)  # Verwende append() in Python-Bindungen
+        self.a.append(self.r)  # Verwende append() in Python-Bindungen
 
         # Connect Signal
         self.a.connect("notify::folded", self.e)
         self.e()
 
     def e(self, *data):
-        if self.a.props.folded:  # Korrigiert: get_folded() -> props.folded
+        if self.a.props.folded:  # Korrekt: props.folded
             self.lh.set_show_end_title_buttons(True)
             self.rh.set_show_start_title_buttons(True)
             self.b.set_visible(False)
